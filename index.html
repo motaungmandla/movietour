@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movietree.org - Movies & Series</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <!-- Top Navigation -->
+    <nav class="top-nav">
+        <a href="#" class="logo">movietree.org</a>
+        <div class="searcher">
+            <form id="search-form">
+                <input type="search" id="query" placeholder="Search movies...">
+                <button type="submit">Go</button>
+            </form>
+        </div>
+    </nav>
+
+    <!-- Main Menu -->
+    <header class="main-menu-container">
+        <ul class="main-menu">
+            <li><a href="index.html">Home</a></li>
+            <li class="dropdown">
+                <a href="about.html">About</a>
+                <ul class="submenu">
+                    <li><a href="#">Help</a></li>
+                    <li><a href="#">More info</a></li>
+                    <li><a href="https://motaungmandla.github.io"  target="_blank">Developer</a></li>
+                    <li><a href="#">movietree.org</a></li>
+                </ul>
+            </li>
+            <li class="dropdown">
+                <a href="#">Contact</a>
+                <ul class="submenu">
+                    <li><a href="mailto:maxphin21@gmail.com">Send Email</a></li>
+                </ul>
+            </li>
+            <li><a href="#">Services</a></li>
+        </ul>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <h1>
+            <span class="highlight-gold">Great </span>
+            <span class="highlight-magenta">Movies and Shows </span>
+            <span class="highlight-green">Enlighten Your Day!</span>
+        </h1>
+    </section>
+
+    <!-- Movie Grid -->
+    <section id="movie-grid" class="movie-grid">
+        <!-- Movies will be injected here -->
+    </section>
+
+    <!-- Modal for Movie Details -->
+    <div id="movie-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <img id="modal-poster" src="" alt="Poster">
+            <h2 id="modal-title"></h2>
+            <p id="modal-overview"></p>
+            <p><strong>Release Date:</strong> <span id="modal-date"></span></p>
+            <p><strong>Rating:</strong> <span id="modal-rating"></span></p>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <hr>
+        <p class="foo">Copyright &copy; Mandla Zwane Motaung - All Rights Reserved</p>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="main_n.js"></script>
+</body>
+</html>
