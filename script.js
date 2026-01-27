@@ -1,52 +1,45 @@
-// ✅ YOUR YOUTUBE DEMO VIDEOS
+// ✅ YOUR YOUTUBE DEMO VIDEOS (with fallback thumbnails)
 const projects = [
   {
     id: 1,
     title: "Sesotho AI Translator Demo",
-    video: "https://www.youtube.com/embed/DX6cgWZ8FJg?rel=0&modestbranding=1",
-    thumbnail: "https://img.youtube.com/vi/DX6cgWZ8FJg/maxresdefault.jpg",
+    videoId: "DX6cgWZ8FJg",
     description: "Real-time Sesotho-to-English translation using a fine-tuned NLLB-200 model."
   },
   {
     id: 2,
     title: "Motaung.inc Portal Walkthrough",
-    video: "https://www.youtube.com/embed/RbgsU2eKRww?rel=0&modestbranding=1",
-    thumbnail: "https://img.youtube.com/vi/RbgsU2eKRww/maxresdefault.jpg",
+    videoId: "RbgsU2eKRww",
     description: "AI-powered business dashboard for expense tracking and revenue optimization."
   },
   {
     id: 3,
     title: "WhatsApp Tutoring Bot",
-    video: "https://www.youtube.com/embed/cMrEp6zqllA?rel=0&modestbranding=1",
-    thumbnail: "https://img.youtube.com/vi/cMrEp6zqllA/maxresdefault.jpg",
+    videoId: "cMrEp6zqllA",
     description: "Automated tutoring system delivering lessons and tests via WhatsApp."
   },
   {
     id: 4,
     title: "Operating Systems Solver",
-    video: "https://www.youtube.com/embed/OAIM7nU8uXE?rel=0&modestbranding=1",
-    thumbnail: "https://img.youtube.com/vi/OAIM7nU8uXE/maxresdefault.jpg",
+    videoId: "OAIM7nU8uXE",
     description: "Step-by-step solutions for OS exam problems with LaTeX rendering."
   },
   {
     id: 5,
     title: "Personal Gallery & Vault",
-    video: "https://www.youtube.com/embed/rBkt4kQNRgY?rel=0&modestbranding=1",
-    thumbnail: "https://img.youtube.com/vi/rBkt4kQNRgY/maxresdefault.jpg",
+    videoId: "rBkt4kQNRgY",
     description: "Secure photo gallery with private vault functionality."
   },
   {
     id: 6,
     title: "MovieTree Showcase",
-    video: "https://www.youtube.com/embed/CckLg-uObA0?rel=0&modestbranding=1",
-    thumbnail: "https://img.youtube.com/vi/CckLg-uObA0/maxresdefault.jpg",
+    videoId: "CckLg-uObA0",
     description: "Entertainment hub built with JavaScript and TMDB API."
   },
   {
     id: 7,
     title: "Client Portal Demo",
-    video: "https://www.youtube.com/embed/Rk8kTzeQ3DM?rel=0&modestbranding=1",
-    thumbnail: "https://img.youtube.com/vi/Rk8kTzeQ3DM/maxresdefault.jpg",
+    videoId: "Rk8kTzeQ3DM",
     description: "End-to-end demo of Motaung.inc client-facing tools."
   }
 ];
@@ -60,19 +53,51 @@ const modalDesc = document.getElementById('modal-desc');
 const closeBtn = document.querySelector('.close-btn');
 const themeToggle = document.getElementById('theme-toggle');
 
-// Render projects
+// Generate reliable YouTube thumbnail URL
+function getThumbnail(videoId) {
+  // Try multiple fallbacks in order of quality
+  return [
+    `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`,
+    `https://img.youtube.com/vi/${videoId}/sddefault.jpg`,
+    `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`,
+    `https://img.youtube.com/vi/${videoId}/mqdefault.jpg`,
+    `https://via.placeholder.com/300x170/4a00e0/ffffff?text=${encodeURIComponent("Demo")}`
+  ];
+}
+
+// Render projects with robust image loading
 function renderProjects() {
   grid.innerHTML = '';
   projects.forEach(project => {
     const card = document.createElement('div');
     card.className = 'project-card';
-    card.innerHTML = `
-      <img src="${project.thumbnail}" alt="${project.title}" class="project-thumb" onerror="this.src='https://via.placeholder.com/300x170/4a00e0/ffffff?text=No+Preview'">
-      <div class="project-info">
-        <h3>${project.title}</h3>
-        <p>${project.description}</p>
-      </div>
+    
+    // Create img with fallback logic
+    const img = document.createElement('img');
+    img.alt = project.title;
+    img.className = 'project-thumb';
+    
+    const urls = getThumbnail(project.videoId);
+    let index = 0;
+    
+    img.onerror = () => {
+      index++;
+      if (index < urls.length) {
+        img.src = urls[index];
+      }
+    };
+    
+    img.src = urls[0]; // Start with highest quality
+    
+    const info = document.createElement('div');
+    info.className = 'project-info';
+    info.innerHTML = `
+      <h3>${project.title}</h3>
+      <p>${project.description}</p>
     `;
+    
+    card.appendChild(img);
+    card.appendChild(info);
     card.addEventListener('click', () => openModal(project));
     grid.appendChild(card);
   });
@@ -81,7 +106,8 @@ function renderProjects() {
 function openModal(project) {
   modalTitle.textContent = project.title;
   modalDesc.textContent = project.description;
-  modalVideo.src = project.video;
+  // ✅ Use full embed URL with privacy settings
+  modalVideo.src = `https://www.youtube.com/embed/${project.videoId}?rel=0&modestbranding=1&autoplay=1`;
   modal.style.display = 'block';
 }
 
