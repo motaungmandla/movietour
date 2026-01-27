@@ -1,32 +1,53 @@
-// Your project data — replace with your actual videos!
+// ✅ YOUR YOUTUBE DEMO VIDEOS
 const projects = [
   {
     id: 1,
-    title: "Sesotho AI Translator",
-    video: "https://example.com/demo1.mp4", // ← Replace with your .mp4 or .webm URL
-    thumbnail: "https://via.placeholder.com/300x170/4a00e0/ffffff?text=Sesotho+AI",
-    description: "Real-time Sesotho-to-English translation using fine-tuned NLLB-200."
+    title: "Sesotho AI Translator Demo",
+    video: "https://www.youtube.com/embed/DX6cgWZ8FJg?rel=0&modestbranding=1",
+    thumbnail: "https://img.youtube.com/vi/DX6cgWZ8FJg/maxresdefault.jpg",
+    description: "Real-time Sesotho-to-English translation using a fine-tuned NLLB-200 model."
   },
   {
     id: 2,
-    title: "Motaung.inc Portal",
-    video: "https://example.com/demo2.mp4",
-    thumbnail: "https://via.placeholder.com/300x170/8e2de2/ffffff?text=Motaung.inc",
+    title: "Motaung.inc Portal Walkthrough",
+    video: "https://www.youtube.com/embed/RbgsU2eKRww?rel=0&modestbranding=1",
+    thumbnail: "https://img.youtube.com/vi/RbgsU2eKRww/maxresdefault.jpg",
     description: "AI-powered business dashboard for expense tracking and revenue optimization."
   },
   {
     id: 3,
-    title: "WhatsApp Automation Bot",
-    video: "https://example.com/demo3.mp4",
-    thumbnail: "https://via.placeholder.com/300x170/1d2b64/ffffff?text=WhatsApp+Bot",
-    description: "Automated tutoring and file sharing via WhatsApp using Python and Twilio."
+    title: "WhatsApp Tutoring Bot",
+    video: "https://www.youtube.com/embed/cMrEp6zqllA?rel=0&modestbranding=1",
+    thumbnail: "https://img.youtube.com/vi/cMrEp6zqllA/maxresdefault.jpg",
+    description: "Automated tutoring system delivering lessons and tests via WhatsApp."
   },
   {
     id: 4,
     title: "Operating Systems Solver",
-    video: "https://example.com/demo4.mp4",
-    thumbnail: "https://via.placeholder.com/300x170/f857a6/ffffff?text=OS+Solver",
+    video: "https://www.youtube.com/embed/OAIM7nU8uXE?rel=0&modestbranding=1",
+    thumbnail: "https://img.youtube.com/vi/OAIM7nU8uXE/maxresdefault.jpg",
     description: "Step-by-step solutions for OS exam problems with LaTeX rendering."
+  },
+  {
+    id: 5,
+    title: "Personal Gallery & Vault",
+    video: "https://www.youtube.com/embed/rBkt4kQNRgY?rel=0&modestbranding=1",
+    thumbnail: "https://img.youtube.com/vi/rBkt4kQNRgY/maxresdefault.jpg",
+    description: "Secure photo gallery with private vault functionality."
+  },
+  {
+    id: 6,
+    title: "MovieTree Showcase",
+    video: "https://www.youtube.com/embed/CckLg-uObA0?rel=0&modestbranding=1",
+    thumbnail: "https://img.youtube.com/vi/CckLg-uObA0/maxresdefault.jpg",
+    description: "Entertainment hub built with JavaScript and TMDB API."
+  },
+  {
+    id: 7,
+    title: "Client Portal Demo",
+    video: "https://www.youtube.com/embed/Rk8kTzeQ3DM?rel=0&modestbranding=1",
+    thumbnail: "https://img.youtube.com/vi/Rk8kTzeQ3DM/maxresdefault.jpg",
+    description: "End-to-end demo of Motaung.inc client-facing tools."
   }
 ];
 
@@ -46,7 +67,7 @@ function renderProjects() {
     const card = document.createElement('div');
     card.className = 'project-card';
     card.innerHTML = `
-      <img src="${project.thumbnail}" alt="${project.title}" class="project-thumb">
+      <img src="${project.thumbnail}" alt="${project.title}" class="project-thumb" onerror="this.src='https://via.placeholder.com/300x170/4a00e0/ffffff?text=No+Preview'">
       <div class="project-info">
         <h3>${project.title}</h3>
         <p>${project.description}</p>
@@ -57,31 +78,25 @@ function renderProjects() {
   });
 }
 
-// Open modal
 function openModal(project) {
   modalTitle.textContent = project.title;
-  modalVideo.src = project.video;
   modalDesc.textContent = project.description;
+  modalVideo.src = project.video;
   modal.style.display = 'block';
-  modalVideo.play();
 }
 
-// Close modal
 closeBtn.onclick = () => {
-  modalVideo.pause();
-  modalVideo.currentTime = 0;
+  modalVideo.src = '';
   modal.style.display = 'none';
 };
 
 window.onclick = (e) => {
   if (e.target === modal) {
-    modalVideo.pause();
-    modalVideo.currentTime = 0;
+    modalVideo.src = '';
     modal.style.display = 'none';
   }
 };
 
-// Theme toggle
 themeToggle.addEventListener('click', () => {
   const isDark = document.body.classList.contains('dark-theme');
   document.body.classList.toggle('dark-theme', !isDark);
@@ -89,5 +104,4 @@ themeToggle.addEventListener('click', () => {
   themeToggle.textContent = isDark ? '🌙' : '☀️';
 });
 
-// Init
 renderProjects();
