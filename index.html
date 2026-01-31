@@ -4,24 +4,448 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Motaung Mandla — Project Demos</title>
-  <link rel="stylesheet" href="style.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      /* Light theme */
+      --bg-color: #ffffff;
+      --text-color: #1a1a1a;
+      --header-bg: #f8f9fa;
+      --card-bg: #ffffff;
+      --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      --border-color: #eaeaea;
+      --accent-color: #4361ee;
+      --accent-hover: #3a56e0;
+      --modal-bg: rgba(0, 0, 0, 0.6);
+      --modal-content-bg: #ffffff;
+      --close-btn-bg: #f1f1f1;
+      --close-btn-hover: #e0e0e0;
+      --theme-icon: #4a4a4a;
+      --grid-gap: 1.5rem;
+      --border-radius: 12px;
+      --transition: all 0.3s ease;
+    }
+
+    .dark-theme {
+      /* Dark theme */
+      --bg-color: #121212;
+      --text-color: #f0f0f0;
+      --header-bg: #1a1a1a;
+      --card-bg: #1e1a2d;
+      --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
+      --border-color: #2d2d2d;
+      --accent-color: #5e72ff;
+      --accent-hover: #7209b7;
+      --modal-bg: rgba(0, 0, 0, 0.85);
+      --modal-content-bg: #1a1a1a;
+      --close-btn-bg: #2a2a2a;
+      --close-btn-hover: #3a3a3a;
+      --theme-icon: #e0e0e0;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      line-height: 1.6;
+      transition: var(--transition);
+      min-height: 100vh;
+      padding: 0;
+      margin: 0;
+      background-image: 
+        radial-gradient(var(--border-color) 1px, transparent 1px),
+        radial-gradient(var(--border-color) 1px, transparent 1px);
+      background-size: 40px 40px;
+      background-position: 0 0, 20px 20px;
+    }
+
+    header {
+      background: linear-gradient(135deg, var(--header-bg), var(--accent-color));
+      padding: 3rem 1.5rem;
+      text-align: center;
+      position: relative;
+      margin-bottom: 3rem;
+      box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .dark-theme header {
+      box-shadow: 0 2px 20px rgba(0, 0, 0, 0.4);
+    }
+
+    h1 {
+      font-size: 3rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      background: linear-gradient(45deg, var(--accent-color), #7209b7, #4cc9f0);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      letter-spacing: -0.5px;
+    }
+
+    .subtitle {
+      font-size: 1.3rem;
+      color: var(--text-color);
+      max-width: 700px;
+      margin: 0 auto 1.5rem;
+      opacity: 0.95;
+      font-weight: 400;
+    }
+
+    #theme-toggle {
+      position: absolute;
+      top: 1.5rem;
+      right: 1.5rem;
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      font-size: 1.3rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: var(--transition);
+      color: var(--theme-icon);
+      box-shadow: var(--card-shadow);
+      z-index: 100;
+      font-weight: bold;
+    }
+
+    #theme-toggle:hover {
+      transform: rotate(30deg) scale(1.05);
+      background: var(--accent-color);
+      color: white;
+      box-shadow: 0 6px 20px rgba(67, 97, 238, 0.4);
+    }
+
+    main {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 1.5rem 4rem;
+    }
+
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: var(--grid-gap);
+    }
+
+    .project-card {
+      background: var(--card-bg);
+      border-radius: var(--border-radius);
+      overflow: hidden;
+      box-shadow: var(--card-shadow);
+      transition: var(--transition);
+      cursor: pointer;
+      border: 1px solid var(--border-color);
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+
+    .project-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+    }
+
+    .dark-theme .project-card:hover {
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
+      transform: translateY(-10px) scale(1.02);
+    }
+
+    .project-thumb {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+      display: block;
+    }
+
+    .project-card:hover .project-thumb {
+      transform: scale(1.08);
+    }
+
+    .project-info {
+      padding: 1.5rem;
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .project-info h3 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 0.75rem;
+      color: var(--text-color);
+      line-height: 1.3;
+    }
+
+    .project-info p {
+      color: var(--text-color);
+      opacity: 0.85;
+      margin-bottom: 0;
+      line-height: 1.6;
+      font-size: 1.05rem;
+    }
+
+    /* Modal Styles */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: var(--modal-bg);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .modal.active {
+      display: flex;
+      opacity: 1;
+    }
+
+    .modal-content {
+      background-color: var(--modal-content-bg);
+      border-radius: 16px;
+      width: 90%;
+      max-width: 900px;
+      max-height: 90vh;
+      overflow-y: auto;
+      position: relative;
+      transform: translateY(30px);
+      opacity: 0;
+      transition: all 0.4s ease;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .modal.active .modal-content {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 1.25rem;
+      right: 1.25rem;
+      font-size: 2rem;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--close-btn-bg);
+      color: var(--text-color);
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: var(--transition);
+      z-index: 10;
+      line-height: 1;
+      font-weight: bold;
+    }
+
+    .close-btn:hover {
+      background: var(--close-btn-hover);
+      transform: rotate(90deg) scale(1.1);
+      color: var(--accent-color);
+    }
+
+    #modal-title {
+      font-size: 2rem;
+      font-weight: 700;
+      margin: 2.5rem 2.5rem 1.5rem;
+      color: var(--text-color);
+      text-align: center;
+      line-height: 1.3;
+    }
+
+    .video-wrapper {
+      width: 100%;
+      padding: 0 2.5rem;
+      margin-bottom: 2rem;
+      position: relative;
+      padding-top: 56.25%;
+    }
+
+    #modal-video {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border-radius: 12px;
+      border: none;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    }
+
+    #modal-desc {
+      padding: 0 2.5rem 2.5rem;
+      color: var(--text-color);
+      opacity: 0.9;
+      line-height: 1.8;
+      font-size: 1.1rem;
+      text-align: center;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .projects-grid {
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 1.25rem;
+      }
+      
+      h1 {
+        font-size: 2.4rem;
+      }
+      
+      .subtitle {
+        font-size: 1.15rem;
+      }
+      
+      header {
+        padding: 2.5rem 1.5rem;
+      }
+      
+      #theme-toggle {
+        width: 40px;
+        height: 40px;
+        top: 1.25rem;
+        right: 1.25rem;
+      }
+      
+      .modal-content {
+        width: 95%;
+        margin: 1rem;
+      }
+      
+      #modal-title {
+        font-size: 1.7rem;
+        margin: 2rem 1.5rem 1.2rem;
+      }
+      
+      .video-wrapper {
+        padding: 0 1.5rem;
+      }
+      
+      #modal-desc {
+        padding: 0 1.5rem 2rem;
+        font-size: 1.05rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .projects-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      h1 {
+        font-size: 2.1rem;
+      }
+      
+      .project-thumb {
+        height: 160px;
+      }
+      
+      .project-info h3 {
+        font-size: 1.4rem;
+      }
+      
+      #theme-toggle {
+        width: 38px;
+        height: 38px;
+      }
+      
+      .project-card:hover {
+        transform: translateY(-5px);
+      }
+    }
+
+    /* Animation for project cards */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(40px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .project-card {
+      animation: fadeInUp 0.6s ease forwards;
+    }
+
+    .project-card:nth-child(1) { animation-delay: 0.1s; }
+    .project-card:nth-child(2) { animation-delay: 0.15s; }
+    .project-card:nth-child(3) { animation-delay: 0.2s; }
+    .project-card:nth-child(4) { animation-delay: 0.25s; }
+    .project-card:nth-child(5) { animation-delay: 0.3s; }
+    .project-card:nth-child(6) { animation-delay: 0.35s; }
+    .project-card:nth-child(7) { animation-delay: 0.4s; }
+    .project-card:nth-child(8) { animation-delay: 0.45s; }
+    .project-card:nth-child(9) { animation-delay: 0.5s; }
+
+    /* Footer */
+    .footer {
+      text-align: center;
+      padding: 2.5rem 0 1.5rem;
+      color: var(--text-color);
+      opacity: 0.7;
+      font-size: 1rem;
+      margin-top: 2rem;
+      border-top: 1px solid var(--border-color);
+    }
+
+    .footer a {
+      color: var(--accent-color);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .footer a:hover {
+      text-decoration: underline;
+    }
+  </style>
 </head>
 <body class="light-theme">
   <header>
-    <h1>Project Demos</h1>
-    <p>Watch live demonstrations of my work in AI, web development, and automation.</p>
+    <h1>Motaung Mandla</h1>
+    <p class="subtitle">Watch live demonstrations of my work in AI, web development, and automation. Each project showcases innovative solutions built with cutting-edge technologies.</p>
     <button id="theme-toggle" aria-label="Toggle theme">🌙</button>
   </header>
 
   <main>
-    <div id="projects-grid" class="projects-grid"></div>
+    <div id="projects-grid" class="projects-grid">
+      <!-- Projects will be dynamically inserted here -->
+    </div>
+    
+    <div class="footer">
+      <p>© 2026 Motaung Mandla • <a href="mailto:kananelolenyolo@gmail.com">kananelolenyolo@gmail.com</a></p>
+    </div>
   </main>
 
   <!-- Modal -->
   <div id="video-modal" class="modal">
     <div class="modal-content">
-      <span class="close-btn">&times;</span>
+      <button class="close-btn" aria-label="Close modal">&times;</button>
       <h2 id="modal-title"></h2>
       <div class="video-wrapper">
         <iframe 
@@ -37,6 +461,184 @@
     </div>
   </div>
 
-  <script src="script.js"></script>
+  <script>
+    // ✅ YOUR PROJECT DEMO VIDEOS (9 total)
+    const projects = [
+      {
+        id: 1,
+        title: "Sesotho AI Translator Demo",
+        videoId: "OZ_XQF6au3E",
+        description: "Real-time Sesotho-to-English translation using fine-tuned NLLB-200."
+      },
+      {
+        id: 2,
+        title: "WhatsApp Tutoring System",
+        videoId: "gthZDipSizE",
+        description: "Automated tutoring for Math, Physics & Python via WhatsApp."
+      },
+      {
+        id: 3,
+        title: "Operating Systems Solver",
+        videoId: "IS91Ok9WQJY",
+        description: "Step-by-step OS exam solutions with LaTeX rendering."
+      },
+      {
+        id: 4,
+        title: "Motaung.inc Client Portal",
+        videoId: "Rk8kTzeQ3DM",
+        description: "AI-powered business dashboard for revenue and expenses."
+      },
+      {
+        id: 5,
+        title: "MovieTree Showcase",
+        videoId: "CckLg-uObA0",
+        description: "Entertainment hub built with JavaScript and TMDB API."
+      },
+      {
+        id: 6,
+        title: "Personal Gallery & Vault",
+        videoId: "-7ltQL13BRk",
+        description: "Secure photo gallery with private access control."
+      },
+      {
+        id: 7,
+        title: "SeSoDa Dataset Overview",
+        videoId: "n6Yh9bJsIkY",
+        description: "Introduction to the Sesotho-English parallel dataset (SeSoDa)."
+      },
+      {
+        id: 8,
+        title: "AI Voice Assistant (Sesotho)",
+        videoId: "rptxkkV71PE",
+        description: "Prototype voice interface for uneducated Basotho users."
+      },
+      {
+        id: 9,
+        title: "Flutter App Walkthrough",
+        videoId: "vvU8pBuEf-o",
+        description: "Demo of the Motaung Hub mobile app with theme toggle and stats."
+      }
+    ];
+
+    // DOM Elements
+    const grid = document.getElementById('projects-grid');
+    const modal = document.getElementById('video-modal');
+    const modalTitle = document.getElementById('modal-title');
+    const modalVideo = document.getElementById('modal-video');
+    const modalDesc = document.getElementById('modal-desc');
+    const closeBtn = document.querySelector('.close-btn');
+    const themeToggle = document.getElementById('theme-toggle');
+
+    // Generate reliable YouTube thumbnail with fallbacks
+    function getThumbnail(videoId) {
+      return [
+        `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`,
+        `https://img.youtube.com/vi/${videoId}/sddefault.jpg`,
+        `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`,
+        `https://img.youtube.com/vi/${videoId}/mqdefault.jpg`,
+        `https://via.placeholder.com/320x180/6a11cb/ffffff?text=Demo+Video`
+      ];
+    }
+
+    // Render project cards with robust image loading
+    function renderProjects() {
+      grid.innerHTML = '';
+      projects.forEach(project => {
+        const card = document.createElement('div');
+        card.className = 'project-card';
+        
+        const img = document.createElement('img');
+        img.alt = project.title;
+        img.className = 'project-thumb';
+        
+        const urls = getThumbnail(project.videoId);
+        let index = 0;
+        
+        img.onerror = () => {
+          index++;
+          if (index < urls.length) {
+            img.src = urls[index];
+          }
+        };
+        
+        img.src = urls[0]; // Start with highest quality
+        
+        const info = document.createElement('div');
+        info.className = 'project-info';
+        info.innerHTML = `
+          <h3>${project.title}</h3>
+          <p>${project.description}</p>
+        `;
+        
+        card.appendChild(img);
+        card.appendChild(info);
+        card.addEventListener('click', () => openModal(project));
+        grid.appendChild(card);
+      });
+    }
+
+    function openModal(project) {
+      modalTitle.textContent = project.title;
+      modalDesc.textContent = project.description;
+      modalVideo.src = `https://www.youtube.com/embed/${project.videoId}?autoplay=1&rel=0&modestbranding=1`;
+      modal.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+      modal.classList.remove('active');
+      modalVideo.src = ''; // Stop video playback
+      document.body.style.overflow = 'auto';
+    }
+
+    // Event Listeners
+    closeBtn.addEventListener('click', closeModal);
+    
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) {
+        closeModal();
+      }
+    });
+    
+    themeToggle.addEventListener('click', () => {
+      const isDark = document.body.classList.contains('dark-theme');
+      
+      if (isDark) {
+        document.body.classList.remove('dark-theme');
+        document.body.classList.add('light-theme');
+        themeToggle.textContent = '🌙';
+        themeToggle.setAttribute('aria-label', 'Switch to dark theme');
+        localStorage.setItem('theme', 'light');
+      } else {
+        document.body.classList.remove('light-theme');
+        document.body.classList.add('dark-theme');
+        themeToggle.textContent = '☀️';
+        themeToggle.setAttribute('aria-label', 'Switch to light theme');
+        localStorage.setItem('theme', 'dark');
+      }
+    });
+    
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && modal.classList.contains('active')) {
+        closeModal();
+      }
+    });
+
+    // Initialize page
+    document.addEventListener('DOMContentLoaded', () => {
+      renderProjects();
+      
+      // Load saved theme preference
+      const savedTheme = localStorage.getItem('theme');
+      if (savedTheme === 'dark' || 
+          (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        document.body.classList.remove('light-theme');
+        document.body.classList.add('dark-theme');
+        themeToggle.textContent = '☀️';
+        themeToggle.setAttribute('aria-label', 'Switch to light theme');
+      }
+    });
+  </script>
 </body>
 </html>
